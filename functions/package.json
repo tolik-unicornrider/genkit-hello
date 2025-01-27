@@ -3,6 +3,7 @@
   "scripts": {
     "genkit:start": "genkit start -- tsx --watch src/genkit-sample.ts",
     "lint": "eslint --ext .js,.ts .",
+    "lint:fix": "eslint --ext .js,.ts . --fix",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "serve": "npm run build && firebase emulators:start --only functions",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "@genkit-ai/firebase": "^0.9.12",
+    "@genkit-ai/googleai": "^0.9.12",
     "@genkit-ai/vertexai": "^0.9.12",
     "express": "^4.21.2",
     "firebase-admin": "^12.6.0",
