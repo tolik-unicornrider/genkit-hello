@@ -60,7 +60,7 @@ chmod +x scripts/test_image.sh
 
 Also, let's create the `.env.example` file:
 
-```plaintext:.env.example
+```
 # Get your API key from https://makersuite.google.com/app/apikey
 GOOGLE_API_KEY=your_api_key_here
 # Get it from botfather

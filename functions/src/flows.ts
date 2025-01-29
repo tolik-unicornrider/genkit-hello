@@ -18,7 +18,6 @@ const RestaurantThemeSchema = z.object({
 // Update the input schema for historical image analysis to accept base64 data
 const HistoricalImageSchema = z.object({
   imageData: z.string(), // base64 encoded image data
-  mimeType: z.string(), // e.g. 'image/jpeg'
 });
 
 export const menuSuggestionFlow = ai.defineFlow(
@@ -52,7 +51,7 @@ export const analyzeHistoricalImageFlow = ai.defineFlow(
     outputSchema: HistoricalAnalysisSchema,
   },
   async (input) => {
-    const dataUrl = `data:${input.mimeType};base64,${input.imageData}`;
+    const dataUrl = `data:image/jpeg;base64,${input.imageData}`;
     const {output} = await ai.generate({
       model: gemini20FlashExp,
       prompt: [
@@ -81,17 +80,22 @@ export const analyzeHistoricalImageFlow = ai.defineFlow(
   }
 );
 
-// Define schema for meme analysis output
+// Schema for AI generation output (detailed analysis)
 const MemeAnalysisSchema = z.object({
   imageDescription: z.string().describe("Detailed description of what's visible in the image"),
   background: z.string().describe("Origin/context of the image - movie scene, historical figure, event, etc."),
   humorExplanation: z.string().describe("Analysis of why this meme is considered humorous"),
 });
 
+// Simplified schema for flow output (just background and humor)
+export const MemeExplanationSchema = z.object({
+  background: z.string().describe("Origin and context of the meme"),
+  explanation: z.string().describe("Why it's funny"),
+});
+
 // Input schema with optional text
 const MemeInputSchema = z.object({
   imageData: z.string(),
-  mimeType: z.string(),
   text: z.string().optional().describe("Optional text that appears on the meme"),
 });
 
@@ -99,10 +103,10 @@ export const analyzeMemeFlow = ai.defineFlow(
   {
     name: "analyzeMemeFlow",
     inputSchema: MemeInputSchema,
-    outputSchema: MemeAnalysisSchema,
+    outputSchema: MemeExplanationSchema,
   },
   async (input) => {
-    const dataUrl = `data:${input.mimeType};base64,${input.imageData}`;
+    const dataUrl = `data:image/jpeg;base64,${input.imageData}`;
     const {output} = await ai.generate({
       model: gemini15Pro,
       prompt: [
@@ -130,6 +134,9 @@ export const analyzeMemeFlow = ai.defineFlow(
       throw new Error("Failed to generate meme analysis");
     }
 
-    return output;
+    return {
+      background: output.background,
+      explanation: output.humorExplanation,
+    };
   }
 );

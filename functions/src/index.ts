@@ -7,6 +7,8 @@
 import {Telegraf, Context, Telegram} from "telegraf";
 import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
+import type {z} from "zod";
+import type {MemeExplanationSchema} from "./flows";
 
 import {analyzeMemeFlow} from "./flows";
 
@@ -46,18 +48,21 @@ async function getFileBuffer(telegram: Telegram, fileId: string): Promise<Buffer
 }
 
 bot.on("message", async (ctx) => {
-  await ctx.reply("Starting analysis...");
   const messageText = ctx.message && "text" in ctx.message ? ctx.message.text : "";
   const image = getImageFromMessage(ctx);
   if (image) {
     // Get image file
     const imageBuffer = await getFileBuffer(ctx.telegram, image.file_id);
-    // Get image analysis
-    const result = await analyzeMemeFlow({imageData: imageBuffer.toString("base64"),
-      mimeType: "image/jpeg", text: messageText});
 
-    // Send the analysis
-    await ctx.reply(JSON.stringify(result));
+    // Get image analysis
+    const result = await analyzeMemeFlow({
+      imageData: imageBuffer.toString("base64"),
+      text: messageText,
+    }) satisfies z.infer<typeof MemeExplanationSchema>;
+
+    // Format and send the analysis
+    const response = `Background: ${result.background}\n\nWhy it's funny: ${result.explanation}`;
+    await ctx.reply(response);
     return;
   }
 });
@@ -75,15 +80,15 @@ export const telegramWebhook = onRequest(async (request, response) => {
 
 export const analyzeMeme = onRequest({timeoutSeconds: 300}, async (request, response) => {
   try {
-    const {imageData, mimeType, text} = request.body;
+    const {imageData, text} = request.body;
 
-    if (!imageData || !mimeType) {
-      response.status(400).send("Image data and MIME type are required");
+    if (!imageData) {
+      response.status(400).send("Image data is required");
       return;
     }
 
     // Use the meme analysis flow
-    const result = await analyzeMemeFlow({imageData, mimeType, text});
+    const result = await analyzeMemeFlow({imageData, text});
     response.json(result);
   } catch (error) {
     logger.error("Error analyzing meme", error);
