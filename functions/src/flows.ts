@@ -1,6 +1,9 @@
 // Import the Genkit core libraries and plugins.
 import {genkit, z} from "genkit";
 import {googleAI, gemini15Pro, gemini15Flash, gemini20FlashExp} from "@genkit-ai/googleai";
+import { enableFirebaseTelemetry } from '@genkit-ai/firebase';
+
+enableFirebaseTelemetry();
 
 const ai = genkit({
   plugins: [
