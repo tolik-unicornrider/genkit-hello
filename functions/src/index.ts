@@ -86,7 +86,7 @@ export const analyzeMeme = onRequest({timeoutSeconds: 300}, async (request, resp
 
     // Use the meme analysis flow and return the string result directly
     const result = await analyzeMemeFlow({imageData, text});
-    response.json({ explanation: result });
+    response.json({explanation: result});
   } catch (error) {
     logger.error("Error analyzing meme", error);
     response.status(500).send("Error analyzing meme");

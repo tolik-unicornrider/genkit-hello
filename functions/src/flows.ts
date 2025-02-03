@@ -1,7 +1,7 @@
 // Import the Genkit core libraries and plugins.
 import {genkit, z} from "genkit";
 import {googleAI} from "@genkit-ai/googleai";
-import { enableFirebaseTelemetry } from '@genkit-ai/firebase';
+import {enableFirebaseTelemetry} from "@genkit-ai/firebase";
 
 enableFirebaseTelemetry();
 
@@ -20,8 +20,8 @@ export const MemeAnalysisSchema = z.object({
   background: z.string().optional().describe("Origin/context of the image"),
   humorExplanation: z.string().optional().describe("Analysis of why this meme is considered humorous"),
   textTranslations: z.object({
-    english: z.string().optional(),    // if needed
-    russian: z.string().optional(),    // if needed
+    english: z.string().optional(), // if needed
+    russian: z.string().optional(), // if needed
   }).optional(),
 });
 
@@ -52,9 +52,9 @@ export const analyzeMemeFlow = ai.defineFlow(
   },
   async (input) => {
     const dataUrl = `data:image/jpeg;base64,${input.imageData}`;
-    
+
     // Call your prompt
-    const { text } = await memePrompt({
+    const {text} = await memePrompt({
       imageUrl: dataUrl,
       text: input.text,
     });
