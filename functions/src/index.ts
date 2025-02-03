@@ -7,8 +7,6 @@
 import {Telegraf, Context, Telegram} from "telegraf";
 import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
-import type {z} from "zod";
-import type {MemeExplanationSchema} from "./flows";
 
 import {analyzeMemeFlow} from "./flows";
 
@@ -58,11 +56,10 @@ bot.on("message", async (ctx) => {
     const result = await analyzeMemeFlow({
       imageData: imageBuffer.toString("base64"),
       text: messageText,
-    }) satisfies z.infer<typeof MemeExplanationSchema>;
+    });
 
-    // Format and send the analysis
-    const response = `Background: ${result.background}\n\nWhy it's funny: ${result.explanation}`;
-    await ctx.reply(response);
+    // Send the analysis directly since it's now a string
+    await ctx.reply(result);
     return;
   }
 });
@@ -87,9 +84,9 @@ export const analyzeMeme = onRequest({timeoutSeconds: 300}, async (request, resp
       return;
     }
 
-    // Use the meme analysis flow
+    // Use the meme analysis flow and return the string result directly
     const result = await analyzeMemeFlow({imageData, text});
-    response.json(result);
+    response.json({ explanation: result });
   } catch (error) {
     logger.error("Error analyzing meme", error);
     response.status(500).send("Error analyzing meme");

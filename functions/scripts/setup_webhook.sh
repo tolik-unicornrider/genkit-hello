@@ -1,0 +1,1 @@
+curl -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook?url=${NGROK_URL}/${PROJECT_ID}/us-central1/telegramWebhook

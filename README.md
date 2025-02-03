@@ -66,3 +66,22 @@ GOOGLE_API_KEY=your_api_key_here
 # Get it from botfather
 TELEGRAM_BOT_TOKEN=
 ```
+
+### Setting up Telegram Webhook with ngrok
+
+For local development, you can use ngrok to create a temporary public URL:
+
+1. Install ngrok and launch it:
+```
+ngrok http http://localhost:5001
+```
+
+2. Set up the Telegram webhook to point to your ngrok URL:
+```
+https://api.telegram.org/bot<your_bot_token>/setWebhook?url=<ngrok_url>/<your_webhook_path>
+```
+
+
+
+
+
