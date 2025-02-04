@@ -1,12 +1,12 @@
 ---
-model: googleai/gemini-1.5-pro
+model: googleai/gemini-2.0-flash-exp
 input:
   schema:
     imageUrl: string
     text?: string
 config:
   temperature: 0.5
-  maxOutputTokens: 2000
+  maxOutputTokens: 1000
   stopSequences:
     -   "<end>"
     -   "<fin>"
@@ -14,15 +14,13 @@ config:
 Analyze this meme: {{media url=imageUrl}}
 {{#if text}}text: "{{text}}"{{/if}}
 
-I need a thorough explanation for someone who doesn't understand the meme. Please include:
+Give a brief explanation of this meme:
 
-1. A detailed description of what's visible in the image (facial expressions, actions, composition).
-2. Any relevant context:
-   - If it's from a computer game, TV series, movie, cartoon, etc, name it and describe the scene or setting.
-   - If it's a historical photograph or painting, please provide historical context.
-3. Explain how/why this image became a meme and what makes it funny (consider irony, cultural references, common usage patterns).
-4. If there is text on the image:
-   - If the text is **not** in English or Russian, translate it into **both** English and Russian.
-   - Show how the text interacts with the visual elements to enhance or create the meme's humor.
+1. What's visible in the image (key elements only)
+2. Quick context (source/origin if relevant)
+3. Why it's funny (main point)
+4. For non-English/Russian text:
+   - English translation
+   - Russian translation
 
-Don't use markdown, html or xml tags in your response. Use only plain text.
+Keep explanations short and focused. Use plain text only, no markdown/tags.

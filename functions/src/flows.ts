@@ -10,6 +10,7 @@ const ai = genkit({
     googleAI({
       apiKey: process.env.GOOGLE_GENAI_API_KEY || "fake-api-key",
     }),
+    // openAI({ apiKey: process.env.OPENAI_API_KEY })
   ],
 });
 

@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"update_id":630164997,"message":{"message_id":18,"from":{"id":120478953,"is_bot":false,"first_name":"Anatoly","last_name":"B","username":"onotolemobile","language_code":"en","is_premium":true},"chat":{"id":120478953,"first_name":"Anatoly","last_name":"B","username":"onotolemobile","type":"private"},"date":1738647805,"forward_origin":{"type":"channel","chat":{"id":-1001889700395,"title":"Долбильня 24/7","username":"MemDoze","type":"channel"},"message_id":25832,"date":1738503745},"forward_from_chat":{"id":-1001889700395,"title":"Долбильня 24/7","username":"MemDoze","type":"channel"},"forward_from_message_id":25832,"forward_date":1738503745,"photo":[{"file_id":"AgACAgIAAxkBAAMSZ6Go_bnaCnBW0RGxMsb8YtQIXvQAAtvqMRtvBNhId76LuTb4MzgBAAMCAANzAAM2BA","file_unique_id":"AQAD2-oxG28E2Eh4","file_size":1951,"width":71,"height":90},{"file_id":"AgACAgIAAxkBAAMSZ6Go_bnaCnBW0RGxMsb8YtQIXvQAAtvqMRtvBNhId76LuTb4MzgBAAMCAANtAAM2BA","file_unique_id":"AQAD2-oxG28E2Ehy","file_size":27825,"width":252,"height":320},{"file_id":"AgACAgIAAxkBAAMSZ6Go_bnaCnBW0RGxMsb8YtQIXvQAAtvqMRtvBNhId76LuTb4MzgBAAMCAAN4AAM2BA","file_unique_id":"AQAD2-oxG28E2Eh9","file_size":116656,"width":631,"height":800},{"file_id":"AgACAgIAAxkBAAMSZ6Go_bnaCnBW0RGxMsb8YtQIXvQAAtvqMRtvBNhId76LuTb4MzgBAAMCAAN5AAM2BA","file_unique_id":"AQAD2-oxG28E2Eh-","file_size":194025,"width":1009,"height":1280}]}}' \
+    http://localhost:5001/${PROJECT_ID}/us-central1/telegramWebhook
